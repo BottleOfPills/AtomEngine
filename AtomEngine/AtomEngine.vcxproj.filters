@@ -26,5 +26,11 @@
     <ClInclude Include="root\include\RenderUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="root\include\GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="root\include\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,9 +1,6 @@
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/glm.hpp>
-
 #include <include/RenderUtils.h>
 #include <include/GLUtils.h>
+#include <include/GameObject.h>
 
 int main()
 {
@@ -65,24 +62,15 @@ int main()
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	float posX, posY = 0;
-	
+	Entity entity(&plane, &planeShader);
+
 	while (!window.ShouldClose())
 	{
-		if (window.IsKeyPressed(GLFW_KEY_A)) posX -= 0.01f;
-		if (window.IsKeyPressed(GLFW_KEY_D)) posX += 0.01f;
-		if (window.IsKeyPressed(GLFW_KEY_W)) posY += 0.01f;
-		if (window.IsKeyPressed(GLFW_KEY_S)) posY -= 0.01f;
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0), glm::vec3(posX, posY, 0));
-
 		glClear(GL_COLOR_BUFFER_BIT);
-		planeShader.Use();
 
-		int transformLoc = glGetUniformLocation(planeShader.GetProgramId(), "transform");
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+		entity.HandleInput(window);
+		entity.Render(planeShader);
 
-		plane.Draw();
 		window.SwapBuffers();
 		window.PollEvents();
 	}

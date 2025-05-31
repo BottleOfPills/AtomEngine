@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "common.h"
 
 #include <iostream>
 
@@ -99,6 +98,12 @@ public:
 	{
         glUseProgram(programId);
     }
+
+	void SetMatrix(const char* name, const glm::mat4& matrix)
+	{
+		int location = glGetUniformLocation(programId, name);
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+	}
 
 private:
 	unsigned int programId;
