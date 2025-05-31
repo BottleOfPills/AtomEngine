@@ -8,7 +8,7 @@
 class Mesh
 {
 public:
-	Mesh(float* vertices, int count, unsigned int* indices, int indexCount) : vertexCount(count)
+	Mesh(float* vertices, int count, unsigned int* indices, int indexCount) : vertexCount(count), usesIndices(false)
 	{
 		if (indices)
 		{
@@ -90,10 +90,16 @@ public:
 		glDeleteProgram(programId);
 	}
 
+	int GetProgramId()
+	{
+		return programId;
+	}
+
     void Use() 
 	{
         glUseProgram(programId);
     }
+
 private:
 	unsigned int programId;
 };
