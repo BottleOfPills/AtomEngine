@@ -1,7 +1,6 @@
 #pragma once
 
 #include "common.h"
-
 #include <iostream>
 
 class Mesh
@@ -47,7 +46,7 @@ public:
 	void Draw()
 	{
 		glBindVertexArray(VAO);
-		if (usesIndices) 
+		if (usesIndices)
 		{
 			glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
 		}
@@ -66,25 +65,25 @@ private:
 class Shader
 {
 public:
-    Shader(const char* vertex_source, const char* fragment_source)
+	Shader(const char* vertex_source, const char* fragment_source)
 	{
-        unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertex_shader, 1, &vertex_source, nullptr);
-        glCompileShader(vertex_shader);
+		unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex_shader, 1, &vertex_source, nullptr);
+		glCompileShader(vertex_shader);
 
-        unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragment_shader, 1, &fragment_source, nullptr);
-        glCompileShader(fragment_shader);
+		unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment_shader, 1, &fragment_source, nullptr);
+		glCompileShader(fragment_shader);
 
-        programId = glCreateProgram();
-        glAttachShader(programId, vertex_shader);
-        glAttachShader(programId, fragment_shader);
-        glLinkProgram(programId);
+		programId = glCreateProgram();
+		glAttachShader(programId, vertex_shader);
+		glAttachShader(programId, fragment_shader);
+		glLinkProgram(programId);
 
-        glDeleteShader(vertex_shader);
-        glDeleteShader(fragment_shader);
-    }
-	~Shader() 
+		glDeleteShader(vertex_shader);
+		glDeleteShader(fragment_shader);
+	}
+	~Shader()
 	{
 		glDeleteProgram(programId);
 	}
@@ -94,10 +93,10 @@ public:
 		return programId;
 	}
 
-    void Use() 
+	void Use()
 	{
-        glUseProgram(programId);
-    }
+		glUseProgram(programId);
+	}
 
 	void SetMatrix(const char* name, const glm::mat4& matrix)
 	{

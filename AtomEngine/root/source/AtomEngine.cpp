@@ -1,16 +1,10 @@
-#include <include/RenderUtils.h>
 #include <include/GLUtils.h>
+#include <include/RenderUtils.h>
 #include <include/GameObject.h>
 
 int main()
 {
 	OpenGLWindow window(800, 600, "Test");
-
-	float triangleVertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f 
-	};
 
 	const char* vertexShaderSource = R"(
 		#version 330 core
@@ -29,47 +23,46 @@ int main()
 		}
 	)";
 
-	// float planeVertices[] = {
-	// 	-0.5f, -0.5f, 0.0f,
-	// 	 0.5f, -0.5f, 0.0f,
-	// 	 0.5f,  0.5f, 0.0f,
-	// 
-	// 	-0.5f, -0.5f, 0.0f,
-	// 	 0.5f,  0.5f, 0.0f,
-	// 	-0.5f,  0.5f, 0.0f 
-	// };
 
-	// Mesh triangle(triangleVertices, 9);
-	// Mesh plane(planeVertices, 18);
-	// Shader planeShader(vertexShaderSource, fragmentShaderSource);
+	float paddleVertices[] = {
+		-0.02f, -0.1f, 0.0f,
+		 0.02f, -0.1f, 0.0f,
+		 0.02f,  0.1f, 0.0f,
+		-0.02f,  0.1f, 0.0f
+	};
+	unsigned int paddleIndices[] = { 0, 1, 2, 0, 2, 3 };
 
-	// Inefficient ^, wastes 2 vertices because vertex 4 is a duplicate of vertex 1 and vertex 5 is a duplicate of vertex 3
-
-	float planeVertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f 
+	float ballVertices[] = {
+		-0.02f, -0.02f, 0.0f,
+		 0.02f, -0.02f, 0.0f,
+		 0.02f,  0.02f, 0.0f,
+		-0.02f,  0.02f, 0.0f
 	};
 
-	unsigned int planeIndices[] = {
-		0, 1, 2,
-		0, 2, 3 
-	};
+	Mesh ballMesh(ballVertices, 12, paddleIndices, 6);
 
-	Mesh plane(planeVertices, 12, planeIndices, 6);
-	Shader planeShader(vertexShaderSource, fragmentShaderSource);
+	Mesh paddleMesh(paddleVertices, 12, paddleIndices, 6);
+	Shader shader(vertexShaderSource, fragmentShaderSource);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	Ball ball(&ballMesh, &shader);
+	Entity leftPaddle(&paddleMesh, &shader);
+	Entity rightPaddle(&paddleMesh, &shader);
 
-	Entity entity(&plane, &planeShader);
+	leftPaddle.GetTransform().SetPosition(-0.9f, 0.0f);
+	rightPaddle.GetTransform().SetPosition(0.9f, 0.0f);
+	ball.GetTransform().SetPosition(0.0f, 0.0f);
 
 	while (!window.ShouldClose())
 	{
+		leftPaddle.HandleInput(window);
+		rightPaddle.HandleInput(window, { GLFW_KEY_LEFT, GLFW_KEY_RIGHT, GLFW_KEY_UP, GLFW_KEY_DOWN });
+		ball.Update(leftPaddle, rightPaddle);
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		entity.HandleInput(window);
-		entity.Render(planeShader);
+		leftPaddle.Render();
+		rightPaddle.Render();
+		ball.Render();
 
 		window.SwapBuffers();
 		window.PollEvents();
