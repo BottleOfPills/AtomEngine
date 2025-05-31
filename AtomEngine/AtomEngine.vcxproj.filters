@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AtomEngine.cpp">
+    <ClCompile Include="root\source\AtomEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="root\include\GLUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="root\include\RenderUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

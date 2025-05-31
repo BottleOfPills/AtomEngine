@@ -19,7 +19,6 @@ public:
 
         glViewport(0, 0, width, height);
 	}
-
     ~OpenGLWindow() {
         glfwTerminate();
     }
@@ -27,6 +26,7 @@ public:
     bool ShouldClose() { return glfwWindowShouldClose(window); }
     void SwapBuffers() { glfwSwapBuffers(window); }
     void PollEvents() { glfwPollEvents(); }
+    bool IsKeyPressed(int key) { return glfwGetKey(window, key) == GLFW_PRESS; };
     GLFWwindow* getWindow() { return window; }
 
 private:
