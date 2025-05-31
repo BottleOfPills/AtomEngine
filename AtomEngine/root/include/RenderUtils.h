@@ -3,17 +3,38 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+
 class Mesh
 {
 public:
-	Mesh(float* vertices, int count) : vertexCount(count)
+	Mesh(float* vertices, int count, unsigned int* indices, int indexCount) : vertexCount(count)
 	{
+		if (indices)
+		{
+			usesIndices = true;
+		}
+
+		if (usesIndices)
+		{
+			printf("Drawing %d indices (triangles: %d)\n", vertexCount, vertexCount / 3);
+		}
+		else
+		{
+			printf("Drawing %d vertices (%d triangles)\n", vertexCount / 3, (vertexCount / 3) / 3);
+		}
+
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
+		glGenBuffers(1, &EBO);
 
 		glBindVertexArray(VAO);
+
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, count * sizeof(float), vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertexCount * sizeof(float), vertices, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 		glEnableVertexAttribArray(0);
@@ -27,12 +48,20 @@ public:
 	void Draw()
 	{
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, vertexCount / 3);
+		if (usesIndices) 
+		{
+			glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
+		}
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, 0, vertexCount / 3);
+		}
 	}
 
 private:
-	unsigned int VAO, VBO;
+	unsigned int VAO, VBO, EBO;
 	int vertexCount;
+	bool usesIndices;
 };
 
 class Shader

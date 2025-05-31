@@ -1,13 +1,11 @@
 #include <include/RenderUtils.h>
 #include <include/GLUtils.h>
 
-#include <iostream>
-
 int main()
 {
 	OpenGLWindow window(800, 600, "Test");
 
-	float vertices[] = {
+	float triangleVertices[] = {
 		-0.5f, -0.5f, 0.0f,
 		 0.5f, -0.5f, 0.0f,
 		 0.0f,  0.5f, 0.0f 
@@ -29,15 +27,45 @@ int main()
 		}
 	)";
 
-	Mesh triangle(vertices, 9);
-	Shader triangleShader(vertexShaderSource, fragmentShaderSource);
+	// float planeVertices[] = {
+	// 	-0.5f, -0.5f, 0.0f,
+	// 	 0.5f, -0.5f, 0.0f,
+	// 	 0.5f,  0.5f, 0.0f,
+	// 
+	// 	-0.5f, -0.5f, 0.0f,
+	// 	 0.5f,  0.5f, 0.0f,
+	// 	-0.5f,  0.5f, 0.0f 
+	// };
+
+	// Mesh triangle(triangleVertices, 9);
+	// Mesh plane(planeVertices, 18);
+	// Shader planeShader(vertexShaderSource, fragmentShaderSource);
+
+	// Inefficient ^, wastes 2 vertices because vertex 4 is a duplicate of vertex 1 and vertex 5 is a duplicate of vertex 3
+
+	float planeVertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f 
+	};
+
+	unsigned int planeIndices[] = {
+		0, 1, 2,
+		0, 2, 3 
+	};
+
+	Mesh plane(planeVertices, 12, planeIndices, 6);
+	Shader planeShader(vertexShaderSource, fragmentShaderSource);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!window.ShouldClose())
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		triangleShader.Use();
-		triangle.Draw();
+		planeShader.Use();
+		plane.Draw();
 
 		window.SwapBuffers();
 		window.PollEvents();
