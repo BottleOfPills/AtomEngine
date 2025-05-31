@@ -1,6 +1,7 @@
 #include <include/GLUtils.h>
 #include <include/RenderUtils.h>
 #include <include/GameObject.h>
+#include <include/Pong.h>
 
 int main()
 {
@@ -22,7 +23,6 @@ int main()
 			frag_color = vec4(1.0, 0.5, 0.2, 1.0);
 		}
 	)";
-
 
 	float paddleVertices[] = {
 		-0.02f, -0.1f, 0.0f,
@@ -48,21 +48,15 @@ int main()
 	Entity leftPaddle(&paddleMesh, &shader);
 	Entity rightPaddle(&paddleMesh, &shader);
 
-	leftPaddle.GetTransform().SetPosition(-0.9f, 0.0f);
-	rightPaddle.GetTransform().SetPosition(0.9f, 0.0f);
-	ball.GetTransform().SetPosition(0.0f, 0.0f);
+	PongGame pongGame(&window, &ball, &leftPaddle, &rightPaddle);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	while (!window.ShouldClose())
 	{
-		leftPaddle.HandleInput(window);
-		rightPaddle.HandleInput(window, { GLFW_KEY_LEFT, GLFW_KEY_RIGHT, GLFW_KEY_UP, GLFW_KEY_DOWN });
-		ball.Update(leftPaddle, rightPaddle);
-
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		leftPaddle.Render();
-		rightPaddle.Render();
-		ball.Render();
+		pongGame.Update();
 
 		window.SwapBuffers();
 		window.PollEvents();

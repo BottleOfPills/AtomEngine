@@ -32,5 +32,11 @@
     <ClInclude Include="root\include\RenderUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="root\include\Pong.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="root\include\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -136,8 +136,10 @@
   <ItemGroup>
     <ClInclude Include="root\include\common.h" />
     <ClInclude Include="root\include\GameObject.h" />
+    <ClInclude Include="root\include\Pong.h" />
     <ClInclude Include="root\include\GLUtils.h" />
     <ClInclude Include="root\include\RenderUtils.h" />
+    <ClInclude Include="root\include\Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
